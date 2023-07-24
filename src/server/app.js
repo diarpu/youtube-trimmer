@@ -34,7 +34,7 @@ app.post('/api/v1/preview', async (req, res) => {
     const { inputIn, inputOut, filename } = req.body
 
     await preview(inputIn, inputOut, filename)
-    res.json({ message: 'Trimmed successfully' })
+    res.json({ message: 'Trimmed and saved video!' })
   } catch (e) {
     console.log(e)
     res.status(500).json({ message: 'Error' })

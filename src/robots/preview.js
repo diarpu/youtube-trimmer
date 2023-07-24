@@ -7,7 +7,7 @@ const previewPart = async (inputIn, inputOut, filename) => {
   const preview = `www/previews/${filename}.mp4`
 
   try {
-    console.log('> Recortando Video...')
+    console.log('> Trimming Video...')
 
     const { execa } = await import('execa')
 
@@ -31,7 +31,7 @@ const previewPart = async (inputIn, inputOut, filename) => {
       preview,
     ])
 
-    console.log('> Video Recortado...')
+    console.log('> Trimmed and saved video...')
   } catch (error) {
     throw new Error(error)
   }
