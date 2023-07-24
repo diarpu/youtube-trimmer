@@ -1,0 +1,29 @@
+body {
+  background-color: #171717;
+  color: white;
+}
+
+#youtube-video {
+  margin-top: 15px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
+}
+
+input,
+button {
+  padding: 6px;
+  border-radius: 3px;
+}
+
+.player-time {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.player-time strong {
+  display: inline-block;
+  width: 40px;
+}

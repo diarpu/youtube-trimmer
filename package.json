@@ -1,0 +1,33 @@
+{
+  "name": "youtube-trimmer",
+  "version": "1.0.0",
+  "description": "",
+  "source": "www/index.js",
+  "scripts": {
+    "web": "parcel watch --dist-dir www/build",
+    "web:build": "parcel build --dist-dir www/build --no-source-maps",
+    "dev": "nodemon src/server/app.js",
+    "start": "node src/server/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "execa": "^7.1.1",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "node-fetch": "^3.3.1",
+    "slugify": "^1.6.6",
+    "youtube-dl-exec": "^2.4.6",
+    "yt-player": "^3.6.1"
+  },
+  "devDependencies": {
+    "@parcel/compressor-brotli": "^2.9.3",
+    "@parcel/compressor-gzip": "^2.9.3",
+    "events": "^3.3.0",
+    "nodemon": "^3.0.1",
+    "parcel": "^2.9.3"
+  }
+}

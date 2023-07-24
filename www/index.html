@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script defer type="module" src="./build/index.js"></script>
+  </head>
+  <body>
+    <h1>Youtube Trimmer</h1>
+    <form id="load-form">
+      <input
+        type="url"
+        required
+        id="url"
+        placeholder="Youtube URL"
+        value="https://www.youtube.com/watch?v=HNBhM8aVSIA"
+      />
+      <input
+        type="text"
+        id="filename"
+        required
+        placeholder="Nombre de Archivo deseado"
+        value="Recalienta Emilia Mernes"
+      />
+      <button type="submit" id="submit">Cargar</button>
+    </form>
+    <div id="response"></div>
+    <form id="preview-form" class="player-time">
+      <div>
+        <strong>In:</strong>
+        <input type="text" value="0" min="0" id="inputIn" required />
+        <button type="button" id="setTimeIn">Set In</button>
+      </div>
+      <div>
+        <strong>Out:</strong>
+        <input type="text" value="0" min="0" id="inputOut" required />
+        <button type="button" id="setTimeOut">Set Out</button>
+      </div>
+      <div>
+        <button id="playPreview" type="button">Play Preview</button>
+        <button id="downloadPreview" type="submit">Download Preview</button>
+      </div>
+    </form>
+    <section id="youtube-video"></section>
+  </body>
+</html>
