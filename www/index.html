@@ -8,41 +8,71 @@
     <script defer type="module" src="./build/index.js"></script>
   </head>
   <body>
-    <h1>Youtube Trimmer</h1>
-    <form id="load-form">
-      <input
-        type="url"
-        required
-        id="url"
-        placeholder="Youtube URL"
-        value="https://www.youtube.com/watch?v=HNBhM8aVSIA"
-      />
-      <input
-        type="text"
-        id="filename"
-        required
-        placeholder="Nombre de Archivo deseado"
-        value="Recalienta Emilia Mernes"
-      />
-      <button type="submit" id="submit">Load and Download Video</button>
-    </form>
-    <div id="response"></div>
-    <form id="preview-form" class="player-time">
-      <div>
-        <strong>In:</strong>
-        <input type="text" value="0" min="0" id="inputIn" required />
-        <button type="button" id="setTimeIn">Set In</button>
+    <section class="section-hero">
+      <div class="container pb-8">
+        <h1>Youtube Trimmer</h1>
+        <div id="response"></div>
       </div>
-      <div>
-        <strong>Out:</strong>
-        <input type="text" value="0" min="0" id="inputOut" required />
-        <button type="button" id="setTimeOut">Set Out</button>
+    </section>
+    <section class="section-forms">
+      <div class="container">
+        <div class="forms-container">
+          <form id="load-form" class="flex flex-col gap-5">
+            <div class="form-group">
+              <label for="url">Youtube Url:</label>
+              <input
+                type="url"
+                required
+                id="url"
+                placeholder="Youtube URL"
+                value="https://www.youtube.com/watch?v=HNBhM8aVSIA"
+              />
+            </div>
+            <div class="form-group">
+              <label for="filename">Filename:</label>
+              <input
+                type="text"
+                id="filename"
+                required
+                placeholder="Nombre de Archivo deseado"
+                value="Recalienta Emilia Mernes"
+              />
+            </div>
+            <button type="submit" id="submit">Load and Download Video</button>
+          </form>
+          <form id="preview-form" class="player-time">
+            <div class="form-group">
+              <label for="inputIn">In:</label>
+              <input type="text" value="0" min="0" id="inputIn" required />
+              <button type="button" id="setTimeIn">Set In</button>
+            </div>
+            <div class="form-group">
+              <label for="inputOut">Out:</label>
+              <input type="text" value="0" min="0" id="inputOut" required />
+              <button type="button" id="setTimeOut">Set Out</button>
+            </div>
+            <div class="preview-buttons">
+              <button id="playPreview" type="button">Play Preview</button>
+              <button id="downloadPreview" type="submit">
+                Download Preview
+              </button>
+            </div>
+          </form>
+        </div>
+        <div id="youtube-video"></div>
       </div>
-      <div>
-        <button id="playPreview" type="button">Play Preview</button>
-        <button id="downloadPreview" type="submit">Download Preview</button>
+    </section>
+    <section id="sectionVideos" class="section-videos">
+      <div class="container">
+        <div id="cVideo" class="cVideo">
+          <h2>Complete Video</h2>
+          <p>Saved in: /www/videos/</p>
+        </div>
+        <div id="pVideo" class="pVideo">
+          <h2>Preview Video</h2>
+          <p>Saved in: /www/previews</p>
+        </div>
       </div>
-    </form>
-    <section id="youtube-video"></section>
+    </section>
   </body>
 </html>

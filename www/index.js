@@ -7,6 +7,7 @@ if (module.hot) {
 
 const form = document.querySelector('#load-form')
 const previewForm = document.querySelector('#preview-form')
+const containerVideos = document.querySelector('#sectionVideos')
 
 const player = new YouTubePlayer('#youtube-video', {
   width: 0,
@@ -45,6 +46,14 @@ form.addEventListener('submit', (e) => {
     .then((res) => res.json())
     .then((data) => {
       response.innerHTML = `<p>${data.message}</p>`
+      containerVideos.classList.add('block')
+      cVideo.classList.add('block')
+
+      // Complete Video
+      const completeVideo = document.createElement('video')
+      completeVideo.src = `/videos/${formData.get('filename')}.mp4`
+      completeVideo.controls = true
+      cVideo.appendChild(completeVideo)
     })
     .catch((err) => {
       console.log(err)
@@ -121,6 +130,13 @@ previewForm.addEventListener('submit', (e) => {
       .then((res) => res.json())
       .then((data) => {
         response.innerHTML = `<p>${data.message}</p>`
+        pVideo.classList.add('block')
+
+        // Preview Video
+        const previewVideo = document.createElement('video')
+        previewVideo.src = `/previews/${formPreviewData.get('filename')}.mp4`
+        previewVideo.controls = true
+        pVideo.appendChild(previewVideo)
       })
       .catch((err) => {
         console.log(err)
