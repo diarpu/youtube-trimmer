@@ -6,6 +6,10 @@ const previewPart = async (inputIn, inputOut, filename) => {
   const video = `www/videos/${filename}.mp4`
   const preview = `www/previews/${filename}.mp4`
 
+  if (!fs.existsSync('www/previews')) {
+    fs.mkdirSync('www/previews')
+  }
+
   try {
     console.log('> Trimming Video...')
 

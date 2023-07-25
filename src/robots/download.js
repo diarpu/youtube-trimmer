@@ -2,6 +2,10 @@ const fs = require('node:fs')
 const youtubedl = require('youtube-dl-exec')
 
 const downloadPart = async (url, filename) => {
+  if (!fs.existsSync('www/videos')) {
+    fs.mkdirSync('www/videos')
+  }
+
   try {
     if (fs.existsSync(`www/videos/${filename}.mp4`)) {
       return
