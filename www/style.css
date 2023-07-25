@@ -4,6 +4,10 @@
   margin: 0;
 }
 
+img {
+  max-width: 100%;
+}
+
 body {
   background-color: #171717;
   color: white;
@@ -20,6 +24,14 @@ input,
 button {
   padding: 6px;
   border-radius: 3px;
+  background-color: white;
+  color: black;
+  text-transform: uppercase;
+}
+
+button.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 #load-form {
@@ -90,6 +102,8 @@ button {
 
   & video {
     width: 100%;
+    /* height: auto; */
+    /* aspect-ratio: 16/9; */
     background-color: gray;
     margin-top: 12px;
   }
@@ -98,6 +112,35 @@ button {
 .cVideo,
 .pVideo {
   display: none;
+}
+
+.posterVideo {
+  display: none;
+
+  & img {
+    margin-top: 12px;
+  }
+}
+
+#remove-image,
+.download-button {
+  position: absolute;
+  right: 8px;
+  border-radius: 50%;
+  background-color: white;
+  color: black;
+  font-size: 14px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+#remove-image {
+  bottom: 46px;
+  cursor: pointer;
 }
 
 @media (min-width: 670px) {

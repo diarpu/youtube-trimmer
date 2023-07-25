@@ -8,14 +8,36 @@ if (module.hot) {
 const form = document.querySelector('#load-form')
 const previewForm = document.querySelector('#preview-form')
 const containerVideos = document.querySelector('#sectionVideos')
+const downloadVideoButton = document.querySelector('#downloadVideo')
+const downloadPrevievButton = document.querySelector('#downloadPreview')
+const divPosterPreview = document.querySelector('#posterVideo')
+
+let isPreviewVideo = false
+let isSelectionPlaying = false
 
 const player = new YouTubePlayer('#youtube-video', {
   width: 0,
   height: 0,
 })
 
+player.on('timeupdate', () => {
+  const currentTime = player.getCurrentTime()
+  const reachStopTime = currentTime >= Number(inputOut.value)
+  if (isSelectionPlaying && reachStopTime) {
+    player.pause()
+    isSelectionPlaying = false
+  }
+})
+
+function playSelection() {
+  player.seek(Number(inputIn.value))
+  isSelectionPlaying = true
+  player.play()
+}
+
 form.addEventListener('submit', (e) => {
   e.preventDefault()
+  downloadVideoButton.classList.add('disabled')
 
   const videoId = url.value.split('v=')[1]
   player.load(videoId, {
@@ -54,6 +76,7 @@ form.addEventListener('submit', (e) => {
       completeVideo.src = `/videos/${formData.get('filename')}.mp4`
       completeVideo.controls = true
       cVideo.appendChild(completeVideo)
+      downloadVideoButton.classList.remove('disabled')
     })
     .catch((err) => {
       console.log(err)
@@ -63,43 +86,66 @@ form.addEventListener('submit', (e) => {
     })
 })
 
-const setInOut = (currentTime, field) => (field.value = currentTime)
+function saveImagePreview() {
+  const name = slugify(filename.value, { lower: true })
+  const videoUrl = `/previews/${name}.mp4`
+  const video = document.createElement('video')
+  video.src = videoUrl
 
-setTimeIn.addEventListener('click', () =>
-  setInOut(player.getCurrentTime(), inputIn)
-)
+  new Promise((resolve, reject) => {
+    video.onloadedmetadata = () => {
+      const canvas = document.createElement('canvas')
+      const aspectRatio = video.videoWidth / video.videoHeight
+      canvas.width = 1000
+      canvas.height = canvas.width / aspectRatio
+      const ctx = canvas.getContext('2d')
 
-setTimeOut.addEventListener('click', () =>
-  setInOut(player.getCurrentTime(), inputOut)
-)
+      video.currentTime = 0
 
-window.addEventListener('keydown', ({ key }) => {
-  console.log(key)
-  const currentTime = player.getCurrentTime()
-  // const isPlayedState = player.getState()
+      video.onseeked = () => {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
 
-  if (key === 'Dead') {
-    player.play()
-  }
-  if (key === '+') {
-    player.pause()
-  }
-  if (key === 'ArrowLeft') {
-    player.seek(currentTime - 1)
-  }
-  if (key === 'ArrowRight') {
-    player.seek(currentTime + 1)
-  }
-  if (key === '{') {
-    setInOut(currentTime, inputIn)
-  }
-  if (key === '}') {
-    setInOut(currentTime, inputOut)
-  }
-})
+        const dataUrl = canvas.toDataURL(`image/webp`)
+        resolve(dataUrl)
+      }
 
-previewForm.addEventListener('submit', (e) => {
-  e.preventDefault()
+      video.onerror = (error) => {
+        reject(error)
+      }
+    }
+  }).then(async (dataUrl) => {
+    await fetch('/api/v1/save/preview', {
+      body: JSON.stringify({
+        url: dataUrl,
+        filename: `${name}-poster`,
+      }),
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => res.json())
+
+    const imgUrl = `previews/${name}-poster.webp`
+    const img = document.createElement('img')
+    img.src = imgUrl
+    divPosterPreview.classList.add('block')
+    divPosterPreview.appendChild(img)
+  })
+}
+
+function getVideoPreview(e) {
+  e && e.preventDefault()
+  downloadPrevievButton.classList.add('disabled')
+
+  if (isPreviewVideo) {
+    pVideo.removeChild(pVideo.querySelector('video'))
+    const imagePoster = divPosterPreview.querySelector('img')
+    imagePoster && divPosterPreview.removeChild(imagePoster)
+    pVideo.classList.remove('block')
+    divPosterPreview.classList.remove('block')
+    isPreviewVideo = false
+  }
 
   response.innerHTML = `<p>Trimmer video...</p>`
   const formPreviewData = new FormData()
@@ -129,18 +175,67 @@ previewForm.addEventListener('submit', (e) => {
     })
       .then((res) => res.json())
       .then((data) => {
+        isPreviewVideo = true
         response.innerHTML = `<p>${data.message}</p>`
+        containerVideos.classList.add('block')
         pVideo.classList.add('block')
+        saveImagePreview()
+        const file = `/previews/${formPreviewData.get('filename')}.mp4`
 
         // Preview Video
         const previewVideo = document.createElement('video')
-        previewVideo.src = `/previews/${formPreviewData.get('filename')}.mp4`
+        previewVideo.src = file
         previewVideo.controls = true
         pVideo.appendChild(previewVideo)
+        downloadPrevievButton.classList.remove('disabled')
       })
       .catch((err) => {
         console.log(err)
         response.innerHTML = `<p>Something went wrong</p>`
       })
+  }
+}
+
+previewForm.addEventListener('submit', (e) => getVideoPreview(e))
+
+const setInOut = (currentTime, field) => (field.value = currentTime)
+
+setTimeIn.addEventListener('click', () =>
+  setInOut(player.getCurrentTime(), inputIn)
+)
+
+setTimeOut.addEventListener('click', () =>
+  setInOut(player.getCurrentTime(), inputOut)
+)
+
+playPreview.addEventListener('click', () => playSelection())
+
+window.addEventListener('keydown', ({ key }) => {
+  const currentTime = player.getCurrentTime()
+  // const isPlayedState = player.getState()
+
+  if (key === 'Dead') {
+    player.play()
+  }
+  if (key === '+') {
+    player.pause()
+  }
+  if (key === 'ArrowLeft') {
+    player.seek(currentTime - 1)
+  }
+  if (key === 'ArrowRight') {
+    player.seek(currentTime + 1)
+  }
+  if (key === '{') {
+    setInOut(currentTime, inputIn)
+  }
+  if (key === '}') {
+    setInOut(currentTime, inputOut)
+  }
+  if (key === 'Shift') {
+    playSelection()
+  }
+  if (key === '¿') {
+    getVideoPreview()
   }
 })

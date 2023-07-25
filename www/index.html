@@ -38,17 +38,31 @@
                 value="Recalienta Emilia Mernes"
               />
             </div>
-            <button type="submit" id="submit">Load and Download Video</button>
+            <button type="submit" id="downloadVideo">
+              Load and Download Video
+            </button>
           </form>
           <form id="preview-form" class="player-time">
             <div class="form-group">
               <label for="inputIn">In:</label>
-              <input type="text" value="0" min="0" id="inputIn" required />
+              <input
+                type="text"
+                value="13.182944162436547"
+                min="0"
+                id="inputIn"
+                required
+              />
               <button type="button" id="setTimeIn">Set In</button>
             </div>
             <div class="form-group">
               <label for="inputOut">Out:</label>
-              <input type="text" value="0" min="0" id="inputOut" required />
+              <input
+                type="text"
+                value="18.958814099182128"
+                min="0"
+                id="inputOut"
+                required
+              />
               <button type="button" id="setTimeOut">Set Out</button>
             </div>
             <div class="preview-buttons">
@@ -70,6 +84,10 @@
         </div>
         <div id="pVideo" class="pVideo">
           <h2>Preview Video</h2>
+          <p>Saved in: /www/previews</p>
+        </div>
+        <div id="posterVideo" class="posterVideo">
+          <h2>Poster for Preview Video</h2>
           <p>Saved in: /www/previews</p>
         </div>
       </div>
