@@ -24,8 +24,6 @@
     "yt-player": "^3.6.1"
   },
   "devDependencies": {
-    "@parcel/compressor-brotli": "^2.9.3",
-    "@parcel/compressor-gzip": "^2.9.3",
     "events": "^3.3.0",
     "nodemon": "^3.0.1",
     "parcel": "^2.9.3"
