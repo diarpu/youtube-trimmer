@@ -59,5 +59,26 @@ app.post('/api/v1/save/preview', async (req, res) => {
   }
 })
 
+app.post('/api/v1/save/screenshot', async (req, res) => {
+  if (!fs.existsSync('www/screenshots')) {
+    fs.mkdirSync('www/screenshots')
+  }
+
+  try {
+    const { url, filename } = req.body
+
+    const response = await fetch(url)
+    const buffer = await response.arrayBuffer()
+    const image = Buffer.from(buffer)
+
+    fs.writeFileSync(`www/screenshots/${filename}.webp`, image)
+
+    res.status(200).json({ message: 'Saved screenshot successfully' })
+  } catch (e) {
+    console.log(e)
+    res.status(500).json({ message: 'Error' })
+  }
+})
+
 // Run
 app.listen(PORT, () => console.log('Server is running'))
