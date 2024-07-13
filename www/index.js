@@ -143,7 +143,7 @@ async function saveImagePreview() {
       },
     }).then((res) => res.json())
 
-    const imgUrl = `previews/${name}-poster.webp`
+    const imgUrl = `/previews/${name}-poster.webp`
     const img = document.createElement('img')
     img.src = imgUrl
     divPosterPreview.classList.add('block')
@@ -160,6 +160,7 @@ function getVideoPreview(e) {
     pVideo.removeChild(pVideo.querySelector('video'))
     pVideo.classList.remove('block')
     const imagePoster = divPosterPreview.querySelector('img')
+    imagePoster.src = ''
     imagePoster && divPosterPreview.removeChild(imagePoster)
     divPosterPreview.classList.remove('block')
     isPreviewVideo = false
@@ -179,7 +180,7 @@ function getVideoPreview(e) {
     Object.fromEntries(formPreviewData.entries())
   )
 
-  if (inputIn.value >= inputOut.value) {
+  if (Number(inputIn.value) >= Number(inputOut.value)) {
     response.innerHTML = `<p>Please, enter correct time</p>`
     return
   } else {
